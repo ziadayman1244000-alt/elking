@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>شامل الكينج — نتيجة الامتحان</title>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#071a22; --bg2:#0b2630; --card:#0e2e38; --line:#1c4450; --text:#eef6f4; --muted:#7fa3a6;
+  --green:#2a9d7f; --gold:#c9a24b; --warn-bg:#f3e3c6; --warn-tx:#7a5a1c;
+}
+:root[data-theme="light"]{
+  --bg:#f3f7f5; --bg2:#e6efec; --card:#ffffff; --line:#cfdedb; --text:#10303a; --muted:#5f7f84;
+  --green:#1f8266; --gold:#a9822c;
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
+input,textarea,select,button{-webkit-appearance:none;appearance:none;border-radius:10px}
+select.field{background-image:linear-gradient(45deg,transparent 50%,var(--muted) 50%),linear-gradient(135deg,var(--muted) 50%,transparent 50%);background-position:18px 50%,24px 50%;background-size:6px 6px;background-repeat:no-repeat;padding-left:40px}
+input,textarea,select{font-size:16px}
+html{scroll-behavior:smooth}
+body{font-family:'Tajawal',system-ui,sans-serif;background:radial-gradient(900px 500px at 90% 30%,rgba(42,157,127,.12),transparent),var(--bg);color:var(--text);min-height:100vh;line-height:1.6}
+.wrap{max-width:1160px;margin:0 auto;padding:0 20px calc(60px + env(safe-area-inset-bottom))}
+@supports(padding:max(0px)){.wrap{padding-left:max(20px,env(safe-area-inset-left));padding-right:max(20px,env(safe-area-inset-right))}}
+header{display:flex;align-items:center;justify-content:space-between;padding:26px 0 22px;border-bottom:1px solid var(--line)}
+.brand{display:flex;align-items:center;gap:12px}
+.brand .logo{width:48px;height:48px;border-radius:50%;border:1.5px solid var(--green);display:grid;place-items:center;position:relative}
+.brand .logo::before{content:"";width:18px;height:18px;border:1.5px solid var(--green);border-radius:50%}
+.brand .logo::after{content:"";position:absolute;top:-2px;right:2px;width:8px;height:8px;background:var(--gold);border-radius:50%}
+.brand small{display:block;font-size:12px;color:var(--muted);line-height:1}
+.brand b{font-size:21px;font-weight:800}
+.tools{display:flex;align-items:center;gap:14px;font-size:12px;color:var(--muted)}
+.tools button{width:36px;height:36px;border-radius:8px;border:1px solid var(--line);background:var(--card);color:var(--text);cursor:pointer;font-size:15px}
+.dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--green);margin-inline-start:6px}
+.status{color:var(--green)}
+.eyebrow{color:var(--green);font-size:13px;display:flex;align-items:center;gap:6px}
+h1{font-weight:800;line-height:1.15;font-size:clamp(40px,7vw,84px)}
+h1 .g{color:var(--green);display:block}
+h1 .u{display:inline-block;border-bottom:3px solid var(--gold)}
+.lead{color:var(--muted);max-width:480px;margin-top:20px;font-size:15px}
+/* home */
+.home{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:center;padding:60px 0 40px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:30px}
+.card .top{display:flex;justify-content:space-between;font-size:12px;color:var(--muted);margin-bottom:22px}
+.card h2{font-size:30px;font-weight:500;line-height:1.3}
+.card h2 span{color:var(--green)}
+.card p.s{font-size:12px;color:var(--muted);margin:8px 0 22px}
+label{display:block;font-size:12px;font-weight:700;margin:14px 0 8px}
+.field{width:100%;height:52px;border-radius:10px;border:1px solid var(--line);background:var(--bg2);color:var(--text);font:inherit;padding:0 16px;font-size:18px;letter-spacing:2px}
+.field:focus,.sel:focus-visible,textarea:focus,select:focus{outline:2px solid var(--green);outline-offset:1px}
+.idwrap{position:relative}
+.idwrap small{position:absolute;left:14px;top:50%;transform:translateY(-50%);font-size:11px;color:var(--muted)}
+.sel{width:100%;height:52px;border-radius:10px;border:1px solid var(--green);background:var(--bg2);color:var(--text);font:inherit;padding:0 16px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;font-size:17px}
+.selbox{position:relative}
+.menu{display:none;position:absolute;right:0;left:0;top:58px;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:6px;z-index:5;box-shadow:0 20px 40px rgba(0,0,0,.35)}
+.menu.open{display:block}
+.menu button{width:100%;display:flex;align-items:center;justify-content:space-between;gap:10px;background:none;border:0;color:var(--text);font:inherit;font-size:14px;padding:11px 12px;border-radius:8px;cursor:pointer}
+.menu button:hover,.menu button.on{background:var(--bg2)}
+.tag{font-size:11px;background:var(--bg);border:1px solid var(--line);border-radius:6px;padding:1px 8px;color:var(--muted)}
+.btn{margin-top:20px;width:100%;height:52px;border:0;border-radius:10px;background:var(--green);color:#fff;font:inherit;font-weight:700;font-size:16px;cursor:pointer}
+.err{color:#e58a7b;font-size:12px;min-height:18px;margin-top:8px}
+.banner{display:flex;align-items:center;gap:14px;border:1px solid var(--gold);border-radius:12px;padding:16px 20px;margin:30px 0;background:rgba(201,162,75,.06)}
+.banner .ic,.ic{width:40px;height:40px;border-radius:10px;display:grid;place-items:center;background:var(--warn-bg);color:var(--warn-tx);font-size:18px;flex:none}
+.banner b{display:block;font-size:14px}.banner span{font-size:12px;color:var(--muted)}
+.why h3{font-size:13px;color:var(--green);font-weight:500;margin:36px 0 18px;display:flex;align-items:center;gap:12px}
+.why h3::before{content:"";width:50px;height:1px;background:var(--gold)}
+.feats{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+.feat{display:flex;gap:14px}
+.feat .ic{background:var(--bg2);color:var(--green);border:1px solid var(--line)}
+.feat b{display:block;font-size:15px}.feat span{font-size:12px;color:var(--muted)}
+/* notes */
+.notes{margin-top:50px;padding-top:30px;border-top:1px solid var(--line)}
+.notes h3{font-size:22px;font-weight:700}
+.notes>p{font-size:13px;color:var(--muted);margin:4px 0 18px}
+.nform{display:grid;grid-template-columns:1fr 1fr;gap:14px;max-width:760px}
+.nform .full{grid-column:1/-1}
+textarea,select.field{padding:12px 16px;font-size:16px;letter-spacing:0}
+textarea{width:100%;min-height:110px;border-radius:10px;border:1px solid var(--line);background:var(--bg2);color:var(--text);font:inherit;resize:vertical}
+.ok{color:var(--green);font-size:13px;margin-top:8px;min-height:20px}
+/* result */
+.result{padding:50px 0}
+.rtop{display:flex;justify-content:space-between;align-items:flex-end;gap:20px;margin:14px 0 34px;flex-wrap:wrap}
+.back{border:1px solid var(--line);background:var(--card);color:var(--text);font:inherit;font-size:13px;padding:12px 16px;border-radius:10px;cursor:pointer}
+.rcard{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:20px;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:34px 30px}
+.stu{display:flex;gap:16px;align-items:center}
+.stu .ic{width:54px;height:54px;background:var(--bg);border:1px solid var(--line);color:var(--gold)}
+.stu small{font-size:11px;color:var(--muted);display:block}
+.stu b{font-size:24px;font-weight:500}
+.stu em{font-style:normal;font-size:12px;color:var(--green)}
+.ring{width:136px;height:136px;border-radius:50%;border:4px solid var(--line);display:grid;place-items:center;text-align:center;justify-self:center}
+.ring b{font-size:30px}.ring small{font-size:11px;color:var(--muted);display:block}
+.pend{text-align:right}
+.badge{display:inline-block;background:var(--warn-bg);color:var(--warn-tx);font-size:11px;font-weight:700;border-radius:5px;padding:3px 10px}
+.pend b{display:block;font-size:14px;margin:8px 0 4px}.pend small{font-size:11px;color:var(--muted)}
+.wish,.help{display:flex;align-items:center;gap:14px;border-radius:12px;padding:18px 22px;margin-top:20px}
+.wish{border:1px solid var(--gold);background:rgba(201,162,75,.06)}
+.wish .ic{background:var(--green);color:#fff}
+.wish b{display:block;font-size:17px}.wish span,.help span{font-size:12px;color:var(--muted)}
+.help{border:1px solid var(--line);background:var(--card);justify-content:space-between}
+.help .l{display:flex;gap:14px;align-items:center}
+.help .ic{background:#bfe3ee;color:#1d4f60}
+.help b{font-size:14px;display:block}
+.help a{color:var(--green);font-size:13px;text-decoration:none;font-weight:700}
+.foot{font-size:11px;color:var(--muted);text-align:center;margin-top:24px}
+[hidden]{display:none!important}
+@media(max-width:820px){
+  .home{grid-template-columns:1fr;padding-top:30px}
+  .hero{order:-1}
+  .feats{grid-template-columns:1fr}
+  .rcard{grid-template-columns:1fr;text-align:center}
+  .stu{justify-content:center}.pend{text-align:center}
+  .nform{grid-template-columns:1fr}
+  .tools .yr{display:none}
+}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+
+/* ===== animations ===== */
+@keyframes rise{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:none}}
+@keyframes cardIn{from{opacity:0;transform:translateY(30px) scale(.97)}to{opacity:1;transform:none}}
+@keyframes underline{from{background-size:0 3px}to{background-size:100% 3px}}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(42,157,127,.45)}50%{box-shadow:0 0 0 10px rgba(42,157,127,0)}}
+@keyframes drop{from{opacity:0;transform:translateY(-8px) scale(.98)}to{opacity:1;transform:none}}
+@keyframes shake{20%,60%{transform:translateX(-6px)}40%,80%{transform:translateX(6px)}}
+@keyframes ringDraw{from{stroke-dashoffset:402}to{stroke-dashoffset:var(--off,300)}}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.35}}
+@keyframes floaty{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+.hero h1 .l1,.hero h1 .l2,.hero h1 .l3{display:block;animation:rise .8s cubic-bezier(.2,.8,.2,1) both}
+.hero h1 .l2{animation-delay:.15s}.hero h1 .l3{animation-delay:.3s}
+.hero .eyebrow{animation:rise .6s both}
+.hero .lead{animation:rise .7s .5s both}
+h1 .u{border:0;padding-bottom:4px;background:linear-gradient(var(--gold),var(--gold)) right bottom/100% 3px no-repeat;animation:underline 1s .9s cubic-bezier(.2,.8,.2,1) both}
+.card#lookupCard{position:relative;z-index:20;animation:cardIn .8s .1s cubic-bezier(.2,.8,.2,1) both}
+.banner{animation:rise .7s .6s both}
+.brand .logo{animation:pulse 3s infinite}
+.brand .logo::before{animation:spin 8s linear infinite;border-style:dashed}
+.brand .logo::after{transform-origin:-16px 20px;animation:spin 6s linear infinite}
+.status .dot{animation:blink 1.8s infinite}
+.orbit{position:absolute;left:0;bottom:-70px;width:170px;height:170px;border:1px solid var(--line);border-radius:50%;animation:spin 24s linear infinite;pointer-events:none}
+.orbit::before,.orbit::after{content:"";position:absolute;border-radius:50%}
+.orbit::before{width:9px;height:9px;background:var(--gold);top:18px;right:14px}
+.orbit::after{width:7px;height:7px;background:var(--green);bottom:12px;left:30px}
+.orbit i{position:absolute;top:50px;right:50px;bottom:50px;left:50px;border-radius:50%;background:var(--bg2);border:1px solid var(--line);animation:spin 24s linear infinite reverse}
+.hero{position:relative}
+.menu.open{animation:drop .22s ease-out}
+.menu button{transition:background .15s,padding .15s}
+.menu button:hover{padding-inline-start:18px}
+.field,.sel,textarea{transition:border-color .2s,box-shadow .2s}
+.field:focus,textarea:focus{box-shadow:0 0 0 4px rgba(42,157,127,.18)}
+.btn{transition:transform .15s,filter .2s,box-shadow .2s}
+.btn:hover{filter:brightness(1.1);box-shadow:0 10px 24px rgba(42,157,127,.3);transform:translateY(-2px)}
+.btn:active{transform:translateY(0) scale(.98)}
+.back,.themeBtn,.tools button{transition:transform .2s,border-color .2s}
+.back:hover,.tools button:hover{border-color:var(--green);transform:translateY(-2px)}
+.tools button:hover{transform:rotate(30deg)}
+.err.show{animation:shake .4s}
+.feat{transition:transform .25s}
+.feat:hover{transform:translateY(-4px)}
+.feat .ic{transition:background .25s,color .25s}
+.feat:hover .ic{background:var(--green);color:#fff}
+.feats .feat,.why h3{animation:rise .7s both}
+.feats .feat:nth-child(1){animation-delay:.75s}.feats .feat:nth-child(2){animation-delay:.85s}.feats .feat:nth-child(3){animation-delay:.95s}
+/* result page */
+#resultView>.eyebrow{animation:rise .5s both}
+#resultView h1{animation:rise .8s .1s both}
+.rcard{animation:cardIn .8s .3s cubic-bezier(.2,.8,.2,1) both}
+.ring{position:relative;border-color:transparent}
+.ring svg{position:absolute;top:-4px;left:-4px;width:calc(100% + 8px);height:calc(100% + 8px);transform:rotate(-90deg)}
+.ring svg circle{fill:none;stroke-width:4}
+.ring .bg{stroke:var(--line)}
+.ring .fg{stroke:var(--green);stroke-linecap:round;stroke-dasharray:402;stroke-dashoffset:var(--off,402);animation:ringDraw 1.6s .4s ease-out both}
+.ring>div{position:relative;animation:floaty 4s ease-in-out infinite}
+.badge{animation:blink 2.4s infinite}
+.wish{animation:rise .7s .7s both}.help{animation:rise .7s .85s both}.foot{animation:rise .7s 1s both}
+.wish .ic{animation:pulse 2.6s 1.2s infinite}
+.badge{animation:none;background:var(--green);color:#fff}
+/* page leave */
+body{transition:opacity .22s,transform .22s}
+body.leaving{opacity:0;transform:translateY(-10px)}
+@media(max-width:820px){.orbit{display:none}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="brand">
+      <div class="logo" aria-hidden="true"></div>
+      <div><small>شامل</small><b>الكينج</b></div>
+    </div>
+    <div class="tools">
+      <span class="status"><span id="portalName">شامل الكينج</span><i class="dot"></i></span>
+      <span class="yr">دفعة <span id="yearLbl">2027</span></span>
+      <button id="themeBtn" aria-label="تغيير الوضع">☀</button>
+    </div>
+  </header>
+
+  <!-- ========== الصفحة الأولى: الاستعلام ========== -->
+  <main id="homeView">
+    <section class="home">
+      <div class="card" id="lookupCard">
+        <div class="top"><span>🔒</span><span>01 — استعلام النتيجة</span></div>
+        <h2>بياناتك عندنا<br><span>في مينيت.</span></h2>
+        <p class="s">اكتب ال ID واختار سنتك الدراسية عشان تجيب نتيجتك.</p>
+
+        <label for="idInput">رقم ال ID</label>
+        <div class="idwrap">
+          <input class="field" id="idInput" inputmode="numeric" enterkeyhint="go" placeholder="مثال: 4821" autocomplete="off" dir="rtl">
+          <small>4 أرقام</small>
+        </div>
+
+        <label>السنة الدراسية</label>
+        <div class="selbox">
+          <button type="button" class="sel" id="selBtn" aria-haspopup="listbox" aria-expanded="false">
+            <span id="selText">تالتة ثانوي</span><span>⌄</span>
+          </button>
+          <div class="menu" id="menu" role="listbox"></div>
+        </div>
+        <div class="err" id="err" role="alert"></div>
+        <button class="btn" id="goBtn" type="button">شوف النتيجة</button>
+      </div>
+
+      <div class="hero">
+        <div class="eyebrow">✦ بوابة الامتحان الشامل</div>
+        <h1><span class="l1">شوف نتيجتك،</span><span class="l2 g">فتاح يا عليم</span><span class="l3 g"><span class="u">رزاق يا كريم</span></span></h1>
+        <div class="orbit" aria-hidden="true"><i></i></div>
+        <p class="lead">كل تعبك في ورقة واحدة، اكتب بياناتك وشوف درجتك وتصحيح امتحانك بالتفصيل.</p>
+      </div>
+    </section>
+
+    <section class="why">
+      <h3>ليه شامل الكينج؟</h3>
+      <div class="feats">
+        <div class="feat"><div class="ic">📋</div><div><b>الدرجة والتصحيح</b><span>مش الدرجة بس — هتشوف كل سؤال صححته إزاي.</span></div></div>
+        <div class="feat"><div class="ic">🎯</div><div><b>فاهم مستواك</b><span>اعرف نقاط قوتك وإيه اللي محتاج تراجعه.</span></div></div>
+        <div class="feat"><div class="ic">🔒</div><div><b>خصوصية كاملة</b><span>ال ID بتاعك هو مفتاحك — ويس.</span></div></div>
+      </div>
+    </section>
+
+    <!-- ملاحظات -->
+    <section class="notes" id="notes">
+      <h3>عندك ملاحظة؟</h3>
+      <p>اكتب ملاحظتك واختار سنتك الدراسية عشان توصل للإدارة صح.</p>
+      <form class="nform" id="noteForm">
+        <div>
+          <label for="nStage">السنة الدراسية</label>
+          <select class="field" id="nStage" required></select>
+        </div>
+        <div>
+          <label for="nId">رقم ال ID (اختياري)</label>
+          <input class="field" id="nId" inputmode="numeric" maxlength="4" placeholder="مثال: 4821" dir="rtl">
+        </div>
+        <div class="full">
+          <label for="nText">ملاحظتك</label>
+          <textarea id="nText" required placeholder="اكتب ملاحظتك هنا..."></textarea>
+        </div>
+        <div class="full">
+          <button class="btn" type="submit" style="max-width:240px;margin-top:0">إرسال ملاحظة</button>
+          <div class="ok" id="noteOk" role="status"></div>
+        </div>
+      </form>
+    </section>
+  </main>
+
+  <!-- ========== الصفحة التانية: النتيجة ========== -->
+  <main id="resultView" class="result" hidden>
+    <div class="eyebrow">📄 صفحة النتيجة</div>
+    <div class="rtop">
+      <h1 style="font-size:clamp(40px,6vw,72px)">نتيجتك<span class="g"><span class="u">في مكان واحد.</span></span></h1>
+      <button class="back" id="backBtn" type="button">↻ رجوع للاستعلام</button>
+    </div>
+
+    <div class="rcard">
+      <div class="stu">
+        <div class="ic">🔒</div>
+        <div>
+          <small>الطالب / الطالبة</small>
+          <b id="rName">—</b>
+          <small><em id="rStage">—</em> &nbsp;•&nbsp; الامتحان الشامل</small>
+        </div>
+      </div>
+      <div class="ring"><svg viewBox="0 0 136 136" aria-hidden="true"><circle class="bg" cx="68" cy="68" r="64"/><circle class="fg" cx="68" cy="68" r="64"/></svg><div><b id="rScore">—</b><small>من <span id="rTotal">50</span></small></div></div>
+      <div class="pend">
+        <span class="badge">درجتك</span>
+        <b id="rLine">—</b>
+        <small>الكود: <span id="rId">—</span></small>
+      </div>
+    </div>
+
+    <div class="wish">
+      <div class="ic">🎯</div>
+      <div><b>بالتوفيق يا ولاد</b><span>إن شاء الله النجاح والتفوق لكم جميعًا.</span></div>
+    </div>
+
+    <div class="help">
+      <div class="l"><div class="ic">💬</div><div><span>محتاج مساعدة؟</span><b>لو في مشكلة في بياناتك، ابعت ملاحظة للإدارة.</b></div></div>
+      <a href="#notes" id="toNotes">إرسال ملاحظة ←</a>
+    </div>
+    <p class="foot">🔒 بيانات النتيجة خاصة بالطالب ولا تظهر إلا بعد الاستعلام الصحيح.</p>
+  </main>
+</div>
+
+<script>
+/* ===== إعدادات تقدر تعدلها ===== */
+const YEAR_HOME = 2027, YEAR_RESULT = 2026;
+const TOTALS = { "تالتة ثانوي": 50, "أولى ثانوي": 50, "تانية ثانوي": 30, "أولى ثانوي أزهر": 50, "تانية ثانوي أزهر": 50, "تالتة ثانوي أزهر": 50, "تالتة إعدادي": 40 }; // الدرجة النهائية لكل مرحلة (راجعها)
+const STAGES = [
+  ["تالتة ثانوي","ثانوي 03"],["تانية ثانوي","ثانوي 02"],["أولى ثانوي","ثانوي 01"],
+  ["تالتة إعدادي","إعدادي 03"],["أولى ثانوي أزهر","أزهر 01"],["تانية ثانوي أزهر","أزهر 02"],["تالتة ثانوي أزهر","أزهر 03"]
+];
+/* درجات تالتة وتانية ثانوي والأزهر والإعدادي من ملفات الإكسيل (الاسم والكود والدرجة بس) */
+const STUDENTS = {"1156|تالتة ثانوي":{"name":"رونه اشرف توفيق","score":49},"1186|تالتة ثانوي":{"name":"رؤى احمد نصر الله","score":48},"1102|تالتة ثانوي":{"name":"اشرقت احمد","score":48},"1068|تالتة ثانوي":{"name":"رياض معوض راضي","score":48},"1048|تالتة ثانوي":{"name":"ريماس ايمن محمد","score":47},"1000|تالتة ثانوي":{"name":"ايه محمد","score":47},"1020|تالتة ثانوي":{"name":"جميله خالد غريب","score":47},"1257|تالتة ثانوي":{"name":"ايه ادهم حسن","score":46},"1029|تالتة ثانوي":{"name":"نرمين محمود السيد","score":45},"1005|تالتة ثانوي":{"name":"عبدالله وائل عبد المنعم","score":45},"1212|تالتة ثانوي":{"name":"مهند محمد محمد","score":45},"1248|تالتة ثانوي":{"name":"يارا علي احمد","score":45},"1027|تالتة ثانوي":{"name":"شابي خالد عثمان","score":45},"7222|تالتة ثانوي":{"name":"زياد محمد فخري","score":45},"1042|تالتة ثانوي":{"name":"جنى معتز سعيد","score":44},"1035|تالتة ثانوي":{"name":"ادهم شريف محمد","score":44},"1073|تالتة ثانوي":{"name":"حمزه اسامه","score":44},"1064|تالتة ثانوي":{"name":"غازي محمد","score":43},"1015|تالتة ثانوي":{"name":"يوسف ايمن فتحي","score":43},"1121|تالتة ثانوي":{"name":"منذر خالد عبد الرحمن","score":43},"1061|تالتة ثانوي":{"name":"----","score":43},"1065|تالتة ثانوي":{"name":"على امجد انور","score":43},"1229|تالتة ثانوي":{"name":"فاطمه علاء","score":43},"1183|تالتة ثانوي":{"name":"محمد ممدوح حامد","score":42},"1185|تالتة ثانوي":{"name":"ابراهيم احمد يحيى","score":42},"1074|تالتة ثانوي":{"dup":true},"1155|تالتة ثانوي":{"name":"سهيله محمد","score":42},"1162|تالتة ثانوي":{"name":"سلمى يسري نافع","score":42},"1296|تالتة ثانوي":{"name":"ملك عوض","score":42},"8968|تالتة ثانوي":{"name":"محمد صافي","score":41},"1056|تالتة ثانوي":{"name":"مصطفى محمود احمد","score":41},"1247|تالتة ثانوي":{"name":"مروان كريم جمعه","score":41},"1154|تالتة ثانوي":{"name":"ميار محمد زكريا","score":41},"8280|تالتة ثانوي":{"name":"امينه امجد محمد","score":41},"1264|تالتة ثانوي":{"name":"محمد عيد","score":41},"1241|تالتة ثانوي":{"name":"محمود سيد محمود","score":40},"1216|تالتة ثانوي":{"name":"رودينا محمد ربيع","score":40},"1067|تالتة ثانوي":{"name":"جنى صباحي محمود","score":40},"1086|تالتة ثانوي":{"name":"جنه سلامه","score":40},"1292|تالتة ثانوي":{"name":"سميه ممدوح محمد","score":40},"1217|تالتة ثانوي":{"name":"جنه خالد صلاح الدين","score":40},"1104|تالتة ثانوي":{"name":"يوسف احمد حسام","score":39},"1059|تالتة ثانوي":{"name":"مالك محمد فوزي","score":39},"1170|تالتة ثانوي":{"name":"مي طارق انور","score":39},"1105|تالتة ثانوي":{"name":"اسر امين محمود","score":39},"1051|تالتة ثانوي":{"dup":true},"1049|تالتة ثانوي":{"name":"عمر محمد محمود","score":38},"1196|تالتة ثانوي":{"name":"محمود عصمت محمود","score":38},"1106|تالتة ثانوي":{"name":"هشام محمد هشام","score":38},"1088|تالتة ثانوي":{"name":"ياسمين حسين حامد","score":38},"1033|تالتة ثانوي":{"name":"مريم رفعت محمود","score":38},"1246|تالتة ثانوي":{"name":"مريم محمد عبد الحميد","score":38},"1272|تالتة ثانوي":{"name":"ميرون رامز مدحت","score":38},"1175|تالتة ثانوي":{"name":"محمد احمد عبده","score":37},"1077|تالتة ثانوي":{"name":"فاطمه حمدي شعبان","score":37},"0291|تالتة ثانوي":{"name":"مريم محمد سامي","score":37},"1260|تالتة ثانوي":{"name":"ملك هارون راشيد","score":37},"1006|تالتة ثانوي":{"name":"احمد محمد سعيد","score":37},"1270|تالتة ثانوي":{"name":"ياسين باسم شعبان","score":37},"1201|تالتة ثانوي":{"dup":true},"1038|تالتة ثانوي":{"name":"مي احمد ابراهيم","score":36},"5227|تالتة ثانوي":{"name":"حمزه عادل حمدي","score":36},"1205|تالتة ثانوي":{"name":"محمد ابو بكر","score":36},"1085|تالتة ثانوي":{"name":"جنا اسلام ابو القاسم","score":36},"1146|تالتة ثانوي":{"name":"يوسف سامح حسن","score":36},"1297|تالتة ثانوي":{"name":"دعاء اسامه","score":35},"1228|تالتة ثانوي":{"name":"رانيا جمال","score":35},"1034|تالتة ثانوي":{"name":"سما يسري ابو بكر","score":35},"1293|تالتة ثانوي":{"dup":true},"1076|تالتة ثانوي":{"name":"رودينا وليد علي","score":34},"1152|تالتة ثانوي":{"name":"محمد وائل فؤاد","score":34},"1003|تالتة ثانوي":{"name":"حنين احمد لبيب","score":34},"1089|تالتة ثانوي":{"name":"عبدالله محمد عبدالله","score":34},"1159|تالتة ثانوي":{"name":"ميرنا محرم صالح","score":33},"1202|تالتة ثانوي":{"name":"ملك ممدوح محمد","score":33},"5957|تالتة ثانوي":{"name":"سجى وائل عوض","score":33},"6546|تالتة ثانوي":{"name":"محمد عبد الرحمن الهادي","score":32},"1168|تالتة ثانوي":{"name":"عمر صبحي سعيد","score":32},"8707|تالتة ثانوي":{"name":"محمد عماد رسلان","score":32},"1058|تالتة ثانوي":{"name":"بسمله محمد فؤاد","score":32},"1294|تالتة ثانوي":{"name":"مهند محمد","score":32},"1252|تالتة ثانوي":{"name":"عبدالله سامح اسماعيل","score":32},"1124|تالتة ثانوي":{"name":"عبد الرحمن مهني","score":32},"1018|تالتة ثانوي":{"name":"ادهم اسلام","score":32},"1017|تالتة ثانوي":{"name":"----","score":32},"1144|تالتة ثانوي":{"name":"نوران هاني","score":32},"1151|تالتة ثانوي":{"name":"سلمى محمد رزق","score":31},"1234|تالتة ثانوي":{"name":"زياد جلال شعبان","score":31},"1215|تالتة ثانوي":{"name":"ريتاج محمد سليمان","score":31},"1071|تالتة ثانوي":{"name":"ايه صالح السيد","score":31},"1094|تالتة ثانوي":{"name":"عمرو عاطف روي","score":31},"1288|تالتة ثانوي":{"name":"ياسين محمد عصام","score":31},"1014|تالتة ثانوي":{"name":"مريم ايمن فتحي","score":31},"1078|تالتة ثانوي":{"name":"عبد الرحمن محمد خليل","score":31},"1041|تالتة ثانوي":{"name":"مؤمن محمود","score":30},"1009|تالتة ثانوي":{"name":"اياد هيثم مصطفى","score":30},"2411|تالتة ثانوي":{"name":"مؤمن علي عبد السلام","score":30},"1245|تالتة ثانوي":{"name":"مصطفى محمد محمود","score":30},"1275|تالتة ثانوي":{"name":"دارين احمد خطاب","score":30},"1126|تالتة ثانوي":{"name":"حنين ابراهيم الالفي","score":30},"1219|تالتة ثانوي":{"name":"عمار ياسر جلال","score":29},"1012|تالتة ثانوي":{"name":"بدر محمد","score":29},"1213|تالتة ثانوي":{"name":"فارس محمد فارس","score":29},"1207|تالتة ثانوي":{"name":"فارس ابراهيم عامر","score":29},"1139|تالتة ثانوي":{"name":"عبد الرحمن يحيى","score":29},"1099|تالتة ثانوي":{"name":"حبيبه علي نور","score":29},"1119|تالتة ثانوي":{"name":"محمد خالد منتصر","score":29},"1191|تالتة ثانوي":{"name":"رودينا عمار حمدي","score":29},"1097|تالتة ثانوي":{"name":"فاطمه كامل","score":29},"1182|تالتة ثانوي":{"name":"يوسف بدوي","score":28},"1184|تالتة ثانوي":{"name":"ندى خليل عبد اللطيف","score":28},"1220|تالتة ثانوي":{"name":"ملك عمر","score":28},"1240|تالتة ثانوي":{"name":"عبد الرحمن مصطفى سمير","score":28},"1136|تالتة ثانوي":{"name":"صابر هاني خلف","score":28},"1116|تالتة ثانوي":{"name":"شرين عاشور","score":28},"1230|تالتة ثانوي":{"name":"حنين ناصر محمد","score":28},"1192|تالتة ثانوي":{"name":"حنين خالد محمد","score":28},"1359|تالتة ثانوي":{"name":"عبد الرحمن محمد خليل","score":28},"1129|تالتة ثانوي":{"name":"منه محمد","score":28},"1153|تالتة ثانوي":{"name":"ابتسام","score":28},"1239|تالتة ثانوي":{"name":"سيف ايمن سلامه","score":28},"1211|تالتة ثانوي":{"name":"معاذ قطب عبد السلام","score":27},"1021|تالتة ثانوي":{"name":"ايه محمد كمال","score":27},"1242|تالتة ثانوي":{"dup":true},"1113|تالتة ثانوي":{"name":"ذياد احمد نعمان","score":27},"1130|تالتة ثانوي":{"name":"يامين احمد","score":27},"1163|تالتة ثانوي":{"name":"سلمى احمد رمضان","score":27},"1299|تالتة ثانوي":{"name":"ناديه عبد الحميد","score":27},"1030|تالتة ثانوي":{"name":"----","score":27},"1262|تالتة ثانوي":{"name":"جنى","score":27},"1273|تالتة ثانوي":{"name":"معاذ محمود","score":27},"1132|تالتة ثانوي":{"name":"مؤمن ايمن","score":26},"1001|تالتة ثانوي":{"name":"حنين اشرف محمد","score":26},"1140|تالتة ثانوي":{"name":"يوسف احمد ابو الخير","score":25},"0741|تالتة ثانوي":{"name":"محمد تامر علي","score":25},"1176|تالتة ثانوي":{"name":"حنين ناصر فتحي","score":25},"1127|تالتة ثانوي":{"name":"جنى احمد عبد الحليم","score":25},"3100|تالتة ثانوي":{"name":"يونس احمد","score":25},"9229|تالتة ثانوي":{"name":"احمد اشرف احمد","score":25},"1178|تالتة ثانوي":{"name":"يوسف محمد حمدي","score":25},"1224|تالتة ثانوي":{"name":"يوسف سامح","score":25},"1150|تالتة ثانوي":{"name":"ادهم عويس جابر","score":25},"1066|تالتة ثانوي":{"name":"مصطفى عبد السلام","score":25},"1075|تالتة ثانوي":{"name":"سما ماهر احمد","score":25},"5778|تالتة ثانوي":{"name":"نيره محمد نجم","score":25},"1237|تالتة ثانوي":{"name":"انور هاني انور","score":25},"1171|تالتة ثانوي":{"name":"محمد هشام رزق","score":25},"1114|تالتة ثانوي":{"name":"فاطمه محمد احمد","score":25},"7774|تالتة ثانوي":{"name":"ساره محمد رمضان","score":25},"1289|تالتة ثانوي":{"name":"ذياد عفت احمد","score":25},"1259|تالتة ثانوي":{"name":"----","score":25},"1118|تالتة ثانوي":{"name":"ياسين ابو السعود","score":25},"1267|تالتة ثانوي":{"name":"عبير عادل رجب","score":25},"1123|تالتة ثانوي":{"name":"احمد محمد فوزي","score":25},"1231|تالتة ثانوي":{"name":"يوسف ياسين محمد","score":25},"1110|تالتة ثانوي":{"name":"شروق عماد احمد","score":25},"1279|تالتة ثانوي":{"name":"نور رجب محمود","score":25},"1052|تالتة ثانوي":{"name":"هند اسامه","score":25},"1278|تالتة ثانوي":{"name":"فاطمه محمود محمد","score":25},"1238|تالتة ثانوي":{"name":"روضه رمضان","score":25},"3568|تالتة ثانوي":{"name":"جوسيا رمزي","score":25},"7316|تالتة ثانوي":{"name":"جنى محمد فتحي","score":25},"1062|تالتة ثانوي":{"name":"مريم احمد رضوان","score":25},"1004|تالتة ثانوي":{"name":"مهند نبيل محمد","score":25},"1271|تالتة ثانوي":{"name":"عمر محمد حسين","score":25},"1194|تالتة ثانوي":{"name":"منه عصام عزت","score":25},"1128|تالتة ثانوي":{"name":"شروق محمد جابر","score":25},"2615|تالتة ثانوي":{"name":"احمد رامي احمد","score":25},"1138|تالتة ثانوي":{"name":"----","score":25},"1287|تالتة ثانوي":{"name":"شروق السيد محمد","score":17},"4235|تالتة ثانوي":{"name":"هنا حمدي محمد","score":17},"5350|تالتة ثانوي":{"name":"حسن على","score":17},"1290|تالتة ثانوي":{"name":"شهد خميس صالح","score":17},"4677|تالتة ثانوي":{"name":"سيف عادل","score":16},"1093|تالتة ثانوي":{"name":"محمد ياسر","score":16},"1174|تالتة ثانوي":{"name":"محمد محمود شحاته","score":16},"0133|تالتة ثانوي":{"name":"----","score":16},"1122|تالتة ثانوي":{"name":"مازن محمد امام","score":16},"1254|تالتة ثانوي":{"name":"بيومي محمد محمود","score":16},"1283|تالتة ثانوي":{"name":"نسمه ناصر ممدوح","score":16},"1236|تالتة ثانوي":{"name":"منه محمد","score":15},"0190|تالتة ثانوي":{"name":"احمد كرم احمد","score":14},"1133|تالتة ثانوي":{"name":"يوسف غريب علي","score":14},"2497|تالتة ثانوي":{"name":"ملك شريف","score":13},"2737|تالتة ثانوي":{"name":"ادهم نادر حامد","score":12},"1280|تالتة ثانوي":{"name":"اسماء احمد بخيت","score":11},"5131|تالتة ثانوي":{"name":"ملك شحاته محمد","score":11},"1268|تالتة ثانوي":{"name":"قمر شعبان خميس","score":10},"2384|تالتة ثانوي":{"name":"احمد عبدالله محمد","score":10},"1161|تالتة ثانوي":{"name":"ملك محمد ميهوب","score":9},"1181|تالتة ثانوي":{"name":"ضحى ناصر","score":9},"1498|تالتة ثانوي":{"name":"روئ فاريس","score":9},"7035|تالتة ثانوي":{"name":"فاطمه احمد فوزي","score":3},"1265|تانية ثانوي":{"name":"سلمي عبد المنعم ناجي","score":30},"1090|تانية ثانوي":{"name":"يوسف خالد عبد الخالق","score":30},"1236|تانية ثانوي":{"name":"يوسف اسامه عبد العزيز","score":30},"1169|تانية ثانوي":{"name":"سيف اشرف محمد","score":30},"1162|تانية ثانوي":{"name":"حنين عصام حسن","score":30},"1123|تانية ثانوي":{"name":"رولا عمرو شوقي","score":30},"1262|تانية ثانوي":{"name":"سما محمد فكري","score":30},"1021|تانية ثانوي":{"name":"عمرو نبيل جابر","score":30},"1008|تانية ثانوي":{"name":"عمر ايمن الشرقاوي","score":30},"1135|تانية ثانوي":{"name":"محمد سامح عادل","score":29},"1089|تانية ثانوي":{"name":"نورهان ابراهيم السعيد","score":29},"1045|تانية ثانوي":{"name":"سما هيثم علي","score":29},"1183|تانية ثانوي":{"dup":true},"1022|تانية ثانوي":{"name":"علي حلمي","score":29},"1200|تانية ثانوي":{"name":"جينيسي سامح","score":29},"1247|تانية ثانوي":{"name":"لمار محمد محمد","score":29},"6516|تانية ثانوي":{"name":"شعبان محمد شعبان","score":29},"1220|تانية ثانوي":{"dup":true},"1244|تانية ثانوي":{"name":"الاء البسطويسي عبدالمنعم","score":29},"1234|تانية ثانوي":{"name":"نوران خالد ابراهيم","score":29},"1136|تانية ثانوي":{"name":"مروان احمد سيد","score":28},"1052|تانية ثانوي":{"name":"سلمي عبدلله حامد","score":28},"2862|تانية ثانوي":{"name":"ملك عماد حمدي","score":28},"1088|تانية ثانوي":{"name":"لجين محمود رزق","score":28},"4135|تانية ثانوي":{"name":"عبد الرحمن محمد حسن","score":28},"1113|تانية ثانوي":{"name":"زينب احمد عطيه","score":28},"1026|تانية ثانوي":{"name":"مصطفي محمود محمد","score":28},"1073|تانية ثانوي":{"name":"جاسمين شريف محمد","score":28},"1010|تانية ثانوي":{"name":"محمد عبد العزيز علي","score":28},"1295|تانية ثانوي":{"name":"مريم عاطف فوزي","score":28},"1003|تانية ثانوي":{"name":"محمد ياسر فاروق","score":28},"1050|تانية ثانوي":{"name":"اياد ربيع بدوي","score":28},"1001|تانية ثانوي":{"name":"سوفانا نشأت نجيب","score":28},"1056|تانية ثانوي":{"name":"لمار شريف محمد","score":28},"1140|تانية ثانوي":{"name":"محمد فرج عبد الرحمن","score":27},"1142|تانية ثانوي":{"name":"فرح نادر حسن","score":27},"7765|تانية ثانوي":{"name":"امير محم ابراهيم","score":27},"1013|تانية ثانوي":{"name":"تقي سمير منصور","score":27},"1087|تانية ثانوي":{"name":"يوسف وليد","score":27},"8408|تانية ثانوي":{"name":"محمد اشرف صلاح","score":27},"1036|تانية ثانوي":{"name":"جني احمد ابراهيم","score":27},"7266|تانية ثانوي":{"name":"محمد محمود منازع","score":27},"1103|تانية ثانوي":{"name":"فرحه احمد محمد","score":27},"1248|تانية ثانوي":{"name":"شمس محمد سلامه","score":27},"1202|تانية ثانوي":{"name":"اياد سامي عوض","score":27},"1217|تانية ثانوي":{"name":"سلمي ابراهيم عماره","score":27},"1080|تانية ثانوي":{"name":"ملك عمرو طه","score":26},"3506|تانية ثانوي":{"name":"جنه تامر محمد","score":26},"1187|تانية ثانوي":{"name":"جيسيكا وائل ساويرس","score":26},"4842|تانية ثانوي":{"name":"محمد صلاح عبد المطلب","score":26},"1109|تانية ثانوي":{"name":"عبدلله صلاح","score":26},"1016|تانية ثانوي":{"name":"ملك محمود محمد","score":26},"1192|تانية ثانوي":{"name":"زياد رشدي محمد","score":26},"1293|تانية ثانوي":{"name":"رودينا يسري عاطف","score":26},"1070|تانية ثانوي":{"name":"ساره رمضان معوض","score":26},"1042|تانية ثانوي":{"name":"شهد عبدلله فوزي","score":25},"1267|تانية ثانوي":{"dup":true},"1092|تانية ثانوي":{"name":"نور خالد دسوقي","score":25},"1097|تانية ثانوي":{"name":"حنين محمد حسن","score":25},"1058|تانية ثانوي":{"name":"نورين وائل سيد","score":25},"1223|تانية ثانوي":{"name":"جورج مايكل نادي","score":25},"1194|تانية ثانوي":{"name":"محمد علاء مختار","score":25},"1004|تانية ثانوي":{"name":"دينا محمد عثمان","score":25},"1094|تانية ثانوي":{"name":"دينا محمد فتحي","score":24},"1147|تانية ثانوي":{"name":"جود عبد العزيز ابراهيم","score":24},"1170|تانية ثانوي":{"name":"محمد عزت فوزي","score":24},"1139|تانية ثانوي":{"name":"نادي","score":24},"1053|تانية ثانوي":{"name":"اندرو عادل عيد","score":24},"1208|تانية ثانوي":{"name":"سيف محمد","score":24},"1252|تانية ثانوي":{"name":"كنزي كريم سيد","score":23},"1017|تانية ثانوي":{"name":"عبد العزيز محمد عباس","score":23},"1065|تانية ثانوي":{"name":"غزل محمد فوزي","score":23},"1155|تانية ثانوي":{"name":"مريم احمد عوضي","score":23},"1085|تانية ثانوي":{"name":"سندس احمد عبد المنعم","score":23},"1077|تانية ثانوي":{"name":"محمد حسن مصطفي","score":23},"1141|تانية ثانوي":{"name":"جومانه محمد بديع","score":22},"1273|تانية ثانوي":{"name":"حمزه طلعت عبد الرحيم","score":22},"1186|تانية ثانوي":{"name":"نور الدين فتحي شحاته","score":22},"1055|تانية ثانوي":{"dup":true},"1298|تانية ثانوي":{"name":"جورج اسحاق غالي","score":22},"1118|تانية ثانوي":{"name":"بسمله وائل محمد","score":21},"1287|تانية ثانوي":{"name":"جني صالح احمد","score":21},"1149|تانية ثانوي":{"name":"روضه مرتضي مصطفي","score":21},"1218|تانية ثانوي":{"name":"كنزي محمد ابراهيم","score":21},"3455|تانية ثانوي":{"name":"جني عصام محمد","score":21},"1019|تانية ثانوي":{"name":"تسنيم مصطفي احمد","score":21},"1154|تانية ثانوي":{"name":"مريم يوسف فتحي","score":21},"7918|تانية ثانوي":{"name":"وفاء علي","score":20},"8119|تانية ثانوي":{"name":"جنات عصام عبد الحفيظ","score":20},"1280|تانية ثانوي":{"name":"غفران محمود ابراهيم","score":20},"1188|تانية ثانوي":{"name":"ايريني رامي وجدي","score":20},"1082|تانية ثانوي":{"name":"اسماعيل محمد جمال","score":20},"6859|تانية ثانوي":{"name":"هنا وليد عبد المعطي","score":20},"1224|تانية ثانوي":{"name":"علي محمد عوضي","score":20},"1197|تانية ثانوي":{"name":"اياد احمد فؤاد","score":20},"1214|تانية ثانوي":{"name":"ياسين محمد شعبان","score":20},"1209|تانية ثانوي":{"name":"عمر هاني صابر","score":20},"9534|تانية ثانوي":{"name":"سما هاني عبد المحسن","score":19},"1198|تانية ثانوي":{"name":"عمر عبد العزيز ابراهيم","score":19},"1012|تانية ثانوي":{"name":"هنا حمدي سالم","score":19},"1063|تانية ثانوي":{"name":"يامن احمد جمال","score":19},"1029|تانية ثانوي":{"name":"شادي عمر مصطفي","score":19},"1238|تانية ثانوي":{"name":"مودة محمد محمود","score":19},"1078|تانية ثانوي":{"name":"ملك احمد فتحي جاد","score":19},"9011|تانية ثانوي":{"name":"فرحه قطب عبد الحكيم","score":18},"6910|تانية ثانوي":{"name":"جني علاء الدين","score":18},"1225|تانية ثانوي":{"name":"شهاب محمد محمد","score":18},"1206|تانية ثانوي":{"name":"هنا محمد","score":18},"1213|تانية ثانوي":{"name":"فارس عمر داهش","score":18},"4043|تانية ثانوي":{"name":"حمزه هاني محمد","score":18},"1157|تانية ثانوي":{"name":"هدي اشرف محمد","score":18},"1105|تانية ثانوي":{"name":"شمس حسن صالح","score":18},"6037|تانية ثانوي":{"name":"ملك سامي","score":17},"1161|تانية ثانوي":{"name":"محمد احمد عبد الرحمن","score":17},"1240|تانية ثانوي":{"name":"رحمه محمد","score":17},"1067|تانية ثانوي":{"name":"روينا رامي يوسف","score":17},"1069|تانية ثانوي":{"name":"سما طارق","score":17},"4495|تانية ثانوي":{"name":"صفا ايهاب طه","score":16},"1011|تانية ثانوي":{"name":"دارين صلاح الدين","score":16},"1146|تانية ثانوي":{"name":"عبدلله مصطفي احمد","score":16},"1143|تانية ثانوي":{"name":"مايكل رزق الله","score":16},"1081|تانية ثانوي":{"name":"جومانا عتريس جميل","score":16},"3561|تانية ثانوي":{"name":"احمد مصطفي محمد","score":16},"5975|تانية ثانوي":{"name":"جني ابراهيم السعيد","score":16},"1179|تانية ثانوي":{"name":"جاسمين هيثم محمد","score":16},"5632|تانية ثانوي":{"name":"عمرو محمد حسان","score":16},"1242|تانية ثانوي":{"name":"لوجينا محمد","score":16},"8295|تانية ثانوي":{"name":"سلمي محمد سيد","score":15},"1117|تانية ثانوي":{"name":"ريتاج محمد كمال","score":15},"1111|تانية ثانوي":{"name":"ايمان مدحت صبحي","score":15},"1114|تانية ثانوي":{"name":"ميرنا خالد","score":15},"1107|تانية ثانوي":{"name":"شيماء محمد سعيد","score":15},"1130|تانية ثانوي":{"name":"احمد محمد علي","score":15},"5570|تانية ثانوي":{"name":"رحمه محمد","score":15},"1195|تانية ثانوي":{"name":"محمد منتصر مختار","score":15},"1272|تانية ثانوي":{"name":"يزيد علاء علي","score":15},"1283|تانية ثانوي":{"name":"جونير وجدي يسري","score":15},"1276|تانية ثانوي":{"name":"عبد الرحمن جمعه عبدلله","score":15},"1271|تانية ثانوي":{"name":"احمد محمد حمدان","score":15},"8525|تانية ثانوي":{"name":"محمود ابراهيم","score":15},"1066|تانية ثانوي":{"name":"محمد طارق جمال","score":15},"3037|تانية ثانوي":{"name":"جني احمد محمد","score":15},"1171|تانية ثانوي":{"name":"انس ابراهيم عبد السلام","score":15},"1031|تانية ثانوي":{"name":"هايدي هاني","score":15},"1015|تانية ثانوي":{"name":"بسمله محمود محمد","score":15},"1250|تانية ثانوي":{"name":"حبيبه عادل عيد","score":15},"1297|تانية ثانوي":{"name":"مينا هاني جمال","score":15},"3185|تانية ثانوي":{"name":"هاجر جمعه منير","score":15},"1068|تانية ثانوي":{"name":"منه عبد العزيز محمد","score":15},"1243|تانية ثانوي":{"name":"سما احمد ابراهيم","score":15},"1235|تانية ثانوي":{"name":"سلمي ايمن محمد","score":15},"1145|تانية ثانوي":{"name":"جني محمود فتح الله","score":15},"6751|تانية ثانوي":{"name":"احمد عماد علي السيد","score":15},"6752|تانية ثانوي":{"name":"علي عماد علي السيد","score":15},"1239|تانية ثانوي":{"name":"عهد علي عبد الصبور","score":15},"1128|تانية ثانوي":{"name":"يوسف عادل عبد الحميد","score":13},"6024|تانية ثانوي":{"name":"بسنت عمرو حسن","score":13},"1256|تانية ثانوي":{"name":"محمد رمضان خالد","score":13},"1875|تانية ثانوي":{"name":"يوسف طاهر سيد","score":12},"1190|تانية ثانوي":{"name":"انس محمود محمد","score":12},"8407|تانية ثانوي":{"name":"امنيه اسماعيل علي","score":12},"1253|تانية ثانوي":{"name":"محمود احمد محمود","score":12},"1062|تانية ثانوي":{"name":"بيتر باسم جمال","score":12},"1038|تانية ثانوي":{"name":"فرح مصطفي كمال","score":12},"1156|تانية ثانوي":{"name":"مروان صابر اسماعيل","score":11},"1895|تانية ثانوي":{"name":"يوسف احمد محمد","score":11},"7791|تانية ثانوي":{"name":"خالد احمد خالد","score":10},"1059|تانية ثانوي":{"name":"ملك احمد كمال","score":10},"1099|تانية ثانوي":{"name":"جني احمد محمد","score":10},"1284|تانية ثانوي":{"name":"تقي رمضان صابر حسنين","score":10},"1131|تانية ثانوي":{"name":"زياد بسام خالد","score":10},"1159|تانية ثانوي":{"name":"فادي فيكتور","score":10},"2954|تانية ثانوي":{"name":"عبدلله احمد فايز","score":10},"3759|تانية ثانوي":{"name":"هلال حسين هلال","score":10},"1193|تانية ثانوي":{"name":"مروان محمد احمد","score":5},"1018|تانية ثانوي":{"name":"رويدا عنتر غريب","score":4},"1233|تانية ثانوي":{"name":"ابراهيم محمد ابراهيم","score":4},"5424|أولى ثانوي أزهر":{"name":"حبيبة اسامه","score":30},"5241|أولى ثانوي أزهر":{"name":"حور عطية علام","score":28},"9602|أولى ثانوي أزهر":{"name":"انس عبدالرحمن عبدالله","score":19},"8984|أولى ثانوي أزهر":{"name":"يوسف فتحي","score":17},"8847|تانية ثانوي أزهر":{"name":"دعاء احمد عبدالمنعم حسين","score":44},"6219|تانية ثانوي أزهر":{"name":"ساجد محمد عبيد","score":44},"1744|تانية ثانوي أزهر":{"name":"خالد ربيع محمود","score":40},"8046|تانية ثانوي أزهر":{"name":"حمزة فراج سيد","score":43},"1330|تانية ثانوي أزهر":{"name":"حنين وليد عبدالرحمن","score":41},"8038|تانية ثانوي أزهر":{"name":"جومانا محمود فتحي","score":39},"6931|تانية ثانوي أزهر":{"name":"سلمى حميده","score":38},"8700|تانية ثانوي أزهر":{"name":"ابراهيم خلف","score":33},"3124|تانية ثانوي أزهر":{"name":"ندى عمرو محمد","score":32},"5987|تانية ثانوي أزهر":{"name":"محمد حسام","score":30},"9750|تانية ثانوي أزهر":{"name":"سعد احمد سعد","score":27},"4159|تانية ثانوي أزهر":{"name":"عبدالرحمن حسن ابراهيم","score":25},"9723|تانية ثانوي أزهر":{"name":"رواء محمد عبدالعزيز","score":25},"2338|تانية ثانوي أزهر":{"name":"روان محمد عبدالعزيز","score":25},"1075|تالتة ثانوي أزهر":{"name":"عمرو عماد محمد","score":50},"1071|تالتة ثانوي أزهر":{"name":"حنين جمعة","score":54},"1087|تالتة ثانوي أزهر":{"name":"محمود ناصر محمود","score":42},"5710|تالتة ثانوي أزهر":{"name":"مريم علي كامل","score":39},"1069|تالتة ثانوي أزهر":{"name":"شهد هاني","score":36},"1090|تالتة ثانوي أزهر":{"name":"حبيبة مصطفى عبدالحميد","score":36},"1096|تالتة ثانوي أزهر":{"name":"اسراء حاتم نبيل","score":35},"1109|تالتة ثانوي أزهر":{"name":"سما سيد","score":26},"1053|تالتة ثانوي أزهر":{"name":"عبدالرحمن وائل السيد","score":19},"1055|تالتة ثانوي أزهر":{"name":"حسام حسن عبدالرحيم","score":9},"2342|تالتة إعدادي":{"name":"حمزه محمد كرم","score":40},"4570|تالتة إعدادي":{"name":"حنين محمد شعبان","score":40},"5560|تالتة إعدادي":{"name":"حبيبة محمد فتحي","score":40},"2154|تالتة إعدادي":{"name":"خالد مصطفى اسماعيل","score":39},"9915|تالتة إعدادي":{"name":"انس محمد","score":39},"8703|تالتة إعدادي":{"name":"رقية ابو بكر","score":38.5},"4095|تالتة إعدادي":{"name":"جنى عادل سلامه","score":38},"2738|تالتة إعدادي":{"name":"ساجده محمد محمد","score":38},"5202|تالتة إعدادي":{"name":"كرمة احمد نحمود كامل","score":37.5},"1053|تالتة إعدادي":{"name":"الاء عبدالرحمن الهادي","score":37.5},"9748|تالتة إعدادي":{"name":"ريماس هيثم سمير","score":37.5},"6155|تالتة إعدادي":{"name":"مروان ابراهيم عوض الله","score":37},"4518|تالتة إعدادي":{"name":"فريده جمال","score":36.5},"9277|تالتة إعدادي":{"name":"ايمان محمود ابراهيم","score":34.5},"9496|تالتة إعدادي":{"name":"خالد خليل","score":34.5},"8632|تالتة إعدادي":{"name":"جنا حمدي سالم","score":34.5},"6779|تالتة إعدادي":{"name":"يؤانا مايكل","score":33},"1925|تالتة إعدادي":{"name":"زياد سيد شعيب","score":32},"8481|تالتة إعدادي":{"name":"ادم رامي محمود","score":32},"4192|تالتة إعدادي":{"name":"منه محمد","score":31},"3774|تالتة إعدادي":{"name":"ريم عبدالحميد سعيد","score":30},"6340|تالتة إعدادي":{"name":"عبدالرحمن محمود محمد","score":28.5},"9163|تالتة إعدادي":{"name":"مروة فتحي","score":28},"8574|تالتة إعدادي":{"name":"حمزه مصطفى","score":26},"6065|تالتة إعدادي":{"name":"ايمان محمود علي","score":25.5},"1720|تالتة إعدادي":{"name":"مروان سيد فتحي","score":24},"5833|تالتة إعدادي":{"name":"عمر علاء ابو العلا","score":23},"1944|تالتة إعدادي":{"name":"سماح طارق انور","score":22},"8044|تالتة إعدادي":{"name":"ادم محمد عماد","score":20.5},"5553|تالتة إعدادي":{"name":"يحيى حسين عبدالله","score":20},"7923|تالتة إعدادي":{"name":"معاذ محمود ربيع","score":20},"6885|تالتة إعدادي":{"name":"منه عبدالله محمد","score":20},"3103|تالتة إعدادي":{"name":"يوسف سعد محمود","score":20},"9629|تالتة إعدادي":{"name":"مريم احمد حامد","score":20},"8240|تالتة إعدادي":{"name":"محمد احمد سعد","score":15},"1124|تالتة إعدادي":{"name":"يحيى حسين محمد","score":13},"3332|تالتة إعدادي":{"name":"ريماس محمود عزت","score":40},"9672|تالتة إعدادي":{"name":"نيجار احمد علي","score":40},"6729|تالتة إعدادي":{"name":"لوجينا خالد علي","score":40},"4121|تالتة إعدادي":{"name":"نادين حسام","score":40},"1259|تالتة إعدادي":{"name":"اياد عماد عباس","score":39},"6392|تالتة إعدادي":{"name":"فريده حسام حسني","score":39},"9961|تالتة إعدادي":{"name":"مريم محمد صابر سيد","score":39},"8391|تالتة إعدادي":{"name":"معاد مصطفي جمال","score":38},"3174|تالتة إعدادي":{"name":"رودينا شريف حسام","score":38},"1315|تالتة إعدادي":{"name":"سما عماد امام","score":38},"1780|تالتة إعدادي":{"name":"زياد احمد زكي","score":37},"1284|تالتة إعدادي":{"name":"مريم خالد اسماعيل","score":37},"9429|تالتة إعدادي":{"name":"بيري محمد عطيه","score":37},"9295|تالتة إعدادي":{"name":"وعد حماد محمد","score":37},"9806|تالتة إعدادي":{"name":"ملك شعبان حلمي","score":37},"9376|تالتة إعدادي":{"name":"ضحي عاطف ابو بكر","score":37},"9803|تالتة إعدادي":{"name":"عثمان عبد السلام عثمان","score":36},"5129|تالتة إعدادي":{"name":"جويريه علي فاروق","score":36},"5317|تالتة إعدادي":{"name":"لوي حنفي محمد احمد","score":35},"7282|تالتة إعدادي":{"name":"سامي محمد وجيه","score":35},"8251|تالتة إعدادي":{"name":"ايه محمد","score":33},"5393|تالتة إعدادي":{"name":"محمد مصطفي محمد","score":32},"5782|تالتة إعدادي":{"name":"سلمي محمد حسن","score":32},"8194|تالتة إعدادي":{"name":"يوسف مصطفي طه","score":31},"9956|تالتة إعدادي":{"name":"منار رائد عبد الحميد","score":30},"7150|تالتة إعدادي":{"name":"ادهم احمد سعيد","score":27},"3122|تالتة إعدادي":{"name":"ريماس محمد امام","score":27.5},"6999|تالتة إعدادي":{"name":"ياسين طارق علي","score":25},"5667|تالتة إعدادي":{"name":"جودي اكرم عبد الرحيم","score":24},"7284|تالتة إعدادي":{"name":"ياسين محمد نور الدين","score":23},"9459|تالتة إعدادي":{"name":"راين رضا رافت","score":18},"8966|تالتة إعدادي":{"name":"جني سامي صلاح","score":12},"9083|تالتة إعدادي":{"name":"اشرف احمد محمد","score":25.5},"5556|تالتة إعدادي":{"name":"ياسين شريف عادل","score":17},"5905|تالتة إعدادي":{"name":"محمد وائل سيد","score":12},"1562|تالتة إعدادي":{"name":"يحيي احمد فوزي","score":22},"3597|تالتة إعدادي":{"name":"عبد الرحمن مصطفي عادل","score":35},"8361|تالتة إعدادي":{"name":"ابراهيم محمد اسماعيل","score":30.5},"3753|تالتة إعدادي":{"name":"محمد ادهم حسن","score":33.5},"2068|تالتة إعدادي":{"name":"سيف سعيد عبد النبي","score":15},"6907|تالتة إعدادي":{"name":"احمد خالد محمد","score":29.5},"9125|تالتة إعدادي":{"name":"ابراهيم سعيد يسري","score":25.5},"7321|تالتة إعدادي":{"name":"محمد وليد عبد المعطي","score":22},"4602|تالتة إعدادي":{"name":"ادم محمد عبد الحميد","score":16},"9457|تالتة إعدادي":{"name":"معاد عرفه عطا","score":28},"4654|تالتة إعدادي":{"name":"ياسين محمد امام","score":30},"9075|تالتة إعدادي":{"name":"بلال وليد مرزوق","score":34},"4634|تالتة إعدادي":{"name":"الاء خالد محمد","score":18},"2533|تالتة إعدادي":{"name":"مريم مسعد احمد","score":27},"6427|أولى ثانوي":{"name":"naden ashraf","score":49},"4305|أولى ثانوي":{"name":"hager taqy el den","score":49},"6033|أولى ثانوي":{"name":"ahmed hesham","score":48.5},"1975|أولى ثانوي":{"name":"hana mohamed","score":48},"4240|أولى ثانوي":{"name":"anda khaled","score":48},"6052|أولى ثانوي":{"name":"nada hamdy","score":45},"6559|أولى ثانوي":{"name":"mohamed hany","score":45},"5382|أولى ثانوي":{"name":"jana ibrahim","score":44.5},"4139|أولى ثانوي":{"name":"amar yasser","score":44.5},"2133|أولى ثانوي":{"name":"ziad mohamed","score":43.5},"9913|أولى ثانوي":{"name":"sama emam","score":43},"1963|أولى ثانوي":{"name":"omar mohamed","score":43},"7990|أولى ثانوي":{"name":"moataz mohamed","score":42.5},"1871|أولى ثانوي":{"name":"youssef mostafa","score":42.5},"9662|أولى ثانوي":{"name":"salma mohamed","score":42},"4560|أولى ثانوي":{"name":"radwa ashraf","score":42},"9265|أولى ثانوي":{"name":"malak ramadan","score":42},"8543|أولى ثانوي":{"name":"aysha mohamed","score":41},"2715|أولى ثانوي":{"name":"ziad ahmed","score":41},"3605|أولى ثانوي":{"name":"hamza mohamed","score":40.5},"7769|أولى ثانوي":{"name":"manar mohamed","score":40},"2453|أولى ثانوي":{"name":"mohamed ali","score":39},"7759|أولى ثانوي":{"name":"alia omar","score":38.5},"8039|أولى ثانوي":{"name":"moaz mohamed","score":38},"4992|أولى ثانوي":{"name":"abd rl rahman ahmed","score":37.5},"8715|أولى ثانوي":{"name":"mohamed ahmed","score":37},"6700|أولى ثانوي":{"name":"malak mohamed","score":36.5},"2804|أولى ثانوي":{"name":"mohab shrif","score":36.5},"9502|أولى ثانوي":{"name":"ahmed saad","score":36},"8886|أولى ثانوي":{"name":"yaseen ahmed","score":36},"7951|أولى ثانوي":{"name":"malek mohamed","score":35.5},"8920|أولى ثانوي":{"name":"abd el rahman hatem","score":35},"1998|أولى ثانوي":{"name":"malek hany","score":35},"9697|أولى ثانوي":{"name":"ahmed ramy","score":34.5},"6154|أولى ثانوي":{"name":"mazen mohamed","score":34.5},"1016|أولى ثانوي":{"name":"malak mohamed","score":34},"4552|أولى ثانوي":{"name":"hanen ahmed","score":34},"2180|أولى ثانوي":{"name":"mohaned ahmed","score":34},"2406|أولى ثانوي":{"name":"ahmed mahmoud","score":34},"8636|أولى ثانوي":{"name":"habiba mahmoud","score":33.5},"4618|أولى ثانوي":{"name":"lamar ehab","score":32.5},"9749|أولى ثانوي":{"name":"belal mahmoud","score":32.5},"4612|أولى ثانوي":{"name":"abd el rahman mohamed","score":31.5},"3103|أولى ثانوي":{"name":"shahd mohamed","score":31},"3342|أولى ثانوي":{"name":"kareem ashraf","score":31},"6742|أولى ثانوي":{"name":"menna mashmoud","score":30},"7797|أولى ثانوي":{"name":"karem ahmed","score":30},"2524|أولى ثانوي":{"name":"mariam shrif","score":29.5},"7042|أولى ثانوي":{"name":"jana fared","score":29},"2543|أولى ثانوي":{"name":"marwan salah","score":29},"8841|أولى ثانوي":{"name":"jana mahmoud","score":29},"2292|أولى ثانوي":{"name":"omar sameh","score":28.5},"3711|أولى ثانوي":{"name":"marwa mohamed","score":28},"7004|أولى ثانوي":{"name":"malak fathy","score":27.5},"1711|أولى ثانوي":{"name":"mohamed shebl","score":25.5},"9711|أولى ثانوي":{"name":"ali mohamed","score":25},"1874|أولى ثانوي":{"name":"manar yasser","score":25},"4021|أولى ثانوي":{"name":"ziad shrif","score":25},"6269|أولى ثانوي":{"name":"mohamed sayed","score":25},"9717|أولى ثانوي":{"name":"hazem mostafa","score":25},"6723|أولى ثانوي":{"name":"roqaya ahmed","score":25},"6954|تالتة إعدادي":{"name":"جني عماد عبد النعيم","score":18}};
+/* ================================= */
+const $ = s => document.querySelector(s);
+let stage = STAGES[0][0];
+
+// ثيم
+const root = document.documentElement;
+$('#themeBtn').onclick = () => {
+  const l = root.dataset.theme === 'light';
+  root.dataset.theme = l ? 'dark' : 'light';
+  $('#themeBtn').textContent = l ? '☀' : '☾';
+};
+
+// قائمة السنين
+const menu = $('#menu');
+menu.innerHTML = STAGES.map(([n,t]) =>
+  `<button type="button" role="option" data-s="${n}" class="${n===stage?'on':''}"><span>${n}</span><span class="tag">${t}</span></button>`).join('');
+$('#nStage').innerHTML = '<option value="">اختار السنة</option>' + STAGES.map(([n]) => `<option>${n}</option>`).join('');
+$('#selBtn').onclick = e => { e.stopPropagation(); const o = menu.classList.toggle('open'); $('#selBtn').setAttribute('aria-expanded', o); };
+menu.onclick = e => {
+  const b = e.target.closest('button'); if (!b) return;
+  stage = b.dataset.s; $('#selText').textContent = stage;
+  menu.querySelectorAll('button').forEach(x => x.classList.toggle('on', x === b));
+  menu.classList.remove('open');
+};
+document.addEventListener('click', () => menu.classList.remove('open'));
+
+// أرقام بس + تحويل تلقائي أول ما يتكتب 4 أرقام
+const toEn = v => v.replace(/[\u0660-\u0669]/g, d => d.charCodeAt(0)-0x0660).replace(/[\u06F0-\u06F9]/g, d => d.charCodeAt(0)-0x06F0).replace(/\D/g,'').slice(0,4);
+const idIn = $('#idInput');
+idIn.addEventListener('input', () => {
+  idIn.value = toEn(idIn.value);
+  $('#err').textContent = '';
+});
+$('#nId').addEventListener('input', e => e.target.value = toEn(e.target.value));
+$('#goBtn').onclick = () => tryGo(true);
+idIn.addEventListener('keydown', e => e.key === 'Enter' && tryGo(true));
+
+function go(hash){
+  const set = () => { if (location.hash === hash) render(); else location.hash = hash; };
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches) return set();
+  document.body.classList.add('leaving'); setTimeout(set, 220);
+}
+function tryGo(showErr){
+  if (idIn.value.length !== 4){ if (showErr){ const e=$('#err'); e.textContent='اكتب ال ID من 4 أرقام.'; e.classList.remove('show'); void e.offsetWidth; e.classList.add('show'); } return; }
+  const s = STUDENTS[idIn.value + '|' + stage];
+  if (!s || s.dup){
+    const e=$('#err'); e.textContent = (s && s.dup) ? 'الكود ده متكرر في الكشف، كلّم الإدارة عشان نظبطه.' : 'ال ID ده مش موجود في السنة اللي اخترتها. راجع الرقم والسنة.';
+    e.classList.remove('show'); void e.offsetWidth; e.classList.add('show'); return;
+  }
+  const q = new URLSearchParams({ id: idIn.value, stage, year: YEAR_RESULT });
+  go('#r?' + q.toString());
+}
+
+// عرض الصفحة المناسبة
+function render(){
+  document.body.classList.remove('leaving');
+  const p = new URLSearchParams(location.hash.startsWith('#r?') ? location.hash.slice(3) : '');
+  const id = p.get('id');
+  const isRes = /^\d{4}$/.test(id || '');
+  $('#homeView').hidden = isRes; $('#resultView').hidden = !isRes;
+  $('#yearLbl').textContent = isRes ? (p.get('year') || YEAR_RESULT) : YEAR_HOME;
+  $('#portalName').textContent = isRes ? 'بوابة النتائج' : 'شامل الكينج';
+  if (isRes){
+    const st = p.get('stage') || STAGES[0][0];
+    const rec = STUDENTS[id + '|' + st];
+    if (!rec || rec.dup){ location.hash = '#home'; return; }
+    $('#rName').textContent = rec.name;
+    $('#rStage').textContent = st; $('#rId').textContent = id;
+    const TOTAL = TOTALS[st] || 50;
+    $('#rTotal').textContent = TOTAL;
+    $('#rLine').textContent = 'حصلت على ' + rec.score + ' من ' + TOTAL;
+    $('.ring').style.setProperty('--off', 402 * (1 - Math.min(rec.score / TOTAL, 1)));
+    const el = $('#rScore'), t0 = performance.now();
+    (function tick(t){ const k = Math.min((t - t0) / 1200, 1); el.textContent = k < 1 ? Math.round(rec.score * (1 - Math.pow(1 - k, 3))) : rec.score; if (k < 1) requestAnimationFrame(tick); })(t0);
+    document.title = 'شامل الكينج — نتيجتك';
+  }
+}
+$('#backBtn').onclick = () => { go('#home'); scrollTo(0,0); };
+$('#toNotes').onclick = e => { e.preventDefault(); go('#home'); setTimeout(() => $('#notes').scrollIntoView({behavior:'smooth'}), 350); };
+addEventListener('hashchange', () => { render(); scrollTo(0,0); });
+render();
+
+// الملاحظات (بتتخزن محليًا — اربطها بسيرفرك/شيت عشان توصلك)
+$('#noteForm').addEventListener('submit', async e => {
+  e.preventDefault();
+  const note = { stage: $('#nStage').value, id: $('#nId').value, text: $('#nText').value.trim(), at: new Date().toISOString() };
+  if (!note.stage || !note.text) return;
+  try {
+    // مثال للربط: await fetch('/api/notes',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(note)});
+    const all = JSON.parse(localStorage.getItem('notes') || '[]'); all.push(note);
+    localStorage.setItem('notes', JSON.stringify(all));
+  } catch(_) {}
+  $('#noteForm').reset(); $('#noteOk').textContent = 'وصلت ملاحظتك للإدارة. شكرًا ليك.';
+});
+</script>
+</body>
+</html>
